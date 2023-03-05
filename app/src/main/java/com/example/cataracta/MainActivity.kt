@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -48,6 +49,9 @@ class MainActivity : AppCompatActivity() {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
+        //disable night mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
@@ -57,7 +61,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up the listeners for take photo and video capture buttons
-        viewBinding.imageCaptureButton.setOnClickListener { startCamera() }
         viewBinding.videoCaptureButton.setOnClickListener { captureVideo() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -185,7 +188,7 @@ class MainActivity : AppCompatActivity() {
                     this, cameraSelector, preview, imageCapture, videoCapture)
 
                 // Add custom preview to layout
-                viewBinding.previewFrameLayout.addView(customPreview)
+                //viewBinding.previewFrameLayout.addView(customPreview)
 
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
