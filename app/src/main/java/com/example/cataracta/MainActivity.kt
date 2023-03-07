@@ -3,6 +3,7 @@ package com.example.cataracta
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.media.ToneGenerator
@@ -10,6 +11,10 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
+import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -64,6 +69,10 @@ class MainActivity : AppCompatActivity() {
         viewBinding.videoCaptureButton.setOnClickListener { captureVideo() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        viewBinding.infoButton.setOnClickListener {
+            showPopup()
+        }
     }
 
 
@@ -159,7 +168,6 @@ class MainActivity : AppCompatActivity() {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
             // Preview
-            val customPreview = CustomPreviewView(this) // Instantiate custom view
             val preview = Preview.Builder()
                 .build()
                 .also {
@@ -187,8 +195,6 @@ class MainActivity : AppCompatActivity() {
                 camera = cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview, imageCapture, videoCapture)
 
-                // Add custom preview to layout
-                //viewBinding.previewFrameLayout.addView(customPreview)
 
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
@@ -238,6 +244,17 @@ class MainActivity : AppCompatActivity() {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
             }.toTypedArray()
+    }
+
+    private fun showPopup() {
+        val popupView = LayoutInflater.from(this).inflate(R.layout.info_popup_window, null)
+        val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        popupWindow.isFocusable = true
+        popupWindow.showAsDropDown(viewBinding.popupHelper, 0, 0)
+
+        popupView.findViewById<View>(R.id.info_button_ok).setOnClickListener {
+            popupWindow.dismiss()
+        }
     }
 }
 

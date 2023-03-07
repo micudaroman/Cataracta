@@ -4,6 +4,11 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="take_photo">Take Photo</string>
-    <string name="start_capture">Start Capture</string>
-    <string name="stop_capture">Stop Capture</string>
+    <string name="start_capture">Začať snímanie</string>
+    <string name="stop_capture">Skončiť snímanie</string>
+    <string name="info_title">Postup snímania</string>
+    <string name="info_button">OK</string>
+    <string name="info_text">
+1. Uistite sa, že tvár snímanej osoby sa nachádza vo vyznačenej oblasti\n\n2. Uistite sa, že snímaná osoba má zatvorené oči\n\n3. Informujte snímanú osobu, nech po doznení tónu rýchlo otvorí doširoka oči\n\n4. Spustite snímanie - zaznie tón\n\n5. Po doznení tónu, snímaná osoba rýchlo otvorí doširoka oči\n\n6. Počkajte 2 sekundy a ukončite snímanie
+    </string>
 </resources>
