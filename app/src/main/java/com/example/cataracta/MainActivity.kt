@@ -3,6 +3,7 @@ package com.example.cataracta
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.media.ToneGenerator
@@ -86,6 +87,12 @@ class MainActivity : AppCompatActivity() {
             curRecording.stop()
             camera?.cameraControl?.enableTorch(false)
             recording = null
+//            todo go to the activity and pass src of the video captured
+
+            intent = Intent(this, MediaPlayerActivity::class.java)
+            intent.putExtra("path", "path/to/video/file")
+            startActivity(intent)
+
             return
         }
 
@@ -192,6 +199,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
         IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
