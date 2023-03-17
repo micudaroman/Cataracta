@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.widget.VideoView
+        android:id="@+id/video_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
-        <Button
-            android:id="@+id/play_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Play" />
+<!--    <androidx.media2.widget.VideoView-->
+<!--        android:id="@+id/video_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
 
-        <TextView
-            android:id="@+id/status_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status: Stopped"
-            android:layout_below="@id/play_button"
-            android:layout_centerHorizontal="true" />
+<!--    <androidx.media-->
 
+<!--    <Button-->
+<!--        android:id="@+id/play_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Play"-->
+<!--        android:layout_centerInParent="true"/>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/pause_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Pause"-->
+<!--        android:layout_below="@id/play_button"-->
+<!--        android:layout_centerHorizontal="true"/>-->
     </RelativeLayout>

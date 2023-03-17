@@ -1,54 +1,94 @@
 package com.example.cataracta
 
 
+//import android.R
+import android.content.Intent
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import java.io.File
+import android.widget.VideoView;
 
-
+//todo add videoview
 class MediaPlayerActivity : AppCompatActivity() {
-
+    lateinit var videoView: VideoView
     private var mediaPlayer: MediaPlayer? = null
+    private lateinit var videoUri: Uri
+    private var intent: Intent? = null
+//    getIntent()
+    private var path: String? = null
+    private var videoFile: File? = null
+
+
+//    private var mediaPlayer: MediaPlayer? = null
+//    private var videoView: VideoView? = null
     private var playButton: Button? = null
-    private var statusText: TextView? = null
+    private val pauseButton: Button? = null
 
-
-
-    fun onClick(): View.OnClickListener? {
-        if (mediaPlayer!!.isPlaying) {
-            mediaPlayer!!.pause()
-            playButton?.setText("Play")
-            statusText?.setText("Status: Paused")
-        } else {
-            mediaPlayer!!.start()
-            playButton?.setText("Pause")
-            statusText?.setText("Status: Playing")
-        }
-//        todo this is bullshit
-        return null
-    }
-
+//    var mediacontroller: MediaController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_media_player)
-        mediaPlayer = MediaPlayer.create(this, R.raw.myvideofile)
-        playButton = findViewById<Button>(R.id.play_button)
-        statusText = findViewById<TextView>(R.id.status_text)
+    Log.d(TAG, "mediaPlayer.onCreate()")
+    setContentView(R.layout.activity_media_player)
 
-        playButton?.setOnClickListener( onClick() )
+    intent = getIntent()
+    path = intent?.getStringExtra("path")
+    Log.d(TAG, "mediaPlayer.onCreate()++")
+    Log.d(TAG, "$path")
+    videoFile = File(path)
+
+    mediaPlayer = MediaPlayer.create(this, Uri.parse(videoFile?.absolutePath));
+    videoView = findViewById(R.id.video_view);
 
 
-    }
+    videoView.setVideoPath(videoFile!!.absolutePath)
+//        videoView.setVideoURI(Uri.parse(videoFile!!.absolutePath));
+    mediaPlayer?.start()
 
+//    var playButton = findViewById<Button>(R.id.play_button)
+//    playButton.setOnClickListener {
+//        Log.d(TAG, "playButton++")
+//        videoView.visibility = View.VISIBLE
+//    }
+//
+//
+//    var pauseButton = findViewById<Button>(R.id.pause_button);
+//    pauseButton.setOnClickListener {
+//        Log.d(TAG, "pauseButton++")
+//        mediaPlayer?.pause();
+//        videoView.setVisibility(View.INVISIBLE);
+//    }
+
+}
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mediaPlayer != null) {
-            mediaPlayer!!.release()
-            mediaPlayer = null
-        }
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
+
+    override fun onStart() {
+        super.onStart()
+        // Set the MediaPlayer to play the video
+        Log.d(TAG, "mediaPlayer.onstart()")
+        Log.d(TAG, "$path")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer?.pause()
+    }
+
+    override fun onResume(){
+        super.onResume()
+
+    }
+    companion object {
+        private const val TAG = "Cataracta/MediaPlayer"
+    }
+
 }
