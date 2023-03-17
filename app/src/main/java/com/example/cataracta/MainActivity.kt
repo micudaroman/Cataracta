@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
         // Noise
         val toneGen = ToneGenerator(AudioManager.STREAM_MUSIC, 1000)
-        toneGen.startTone(ToneGenerator.TONE_CDMA_MED_L, 1000)
+        toneGen.startTone(ToneGenerator.TONE_CDMA_MED_L, 500)
 
         // create and start a new recording session
         val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
