@@ -4,31 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.widget.VideoView
-        android:id="@+id/video_view"
+    <com.google.android.exoplayer2.ui.StyledPlayerView
+        android:id="@+id/playerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible" />
+        android:layout_height="200dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:auto_show="false"
+        app:resize_mode="fill"
+        app:surface_type="texture_view" />
 
-<!--    <androidx.media2.widget.VideoView-->
-<!--        android:id="@+id/video_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent" />-->
-
-<!--    <androidx.media-->
-
-<!--    <Button-->
-<!--        android:id="@+id/play_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Play"-->
-<!--        android:layout_centerInParent="true"/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/pause_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Pause"-->
-<!--        android:layout_below="@id/play_button"-->
-<!--        android:layout_centerHorizontal="true"/>-->
-    </RelativeLayout>
+</RelativeLayout>
