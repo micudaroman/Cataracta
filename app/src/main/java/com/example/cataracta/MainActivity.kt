@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     private var videoCapture: VideoCapture<Recorder>? = null
     private var recording: Recording? = null
     private var camera: Camera? = null
-    var name: String? = null
 
     private lateinit var cameraExecutor: ExecutorService
 
@@ -97,7 +96,6 @@ class MainActivity : AppCompatActivity() {
         if (curRecording != null) {
             // Stop the current recording session.
             curRecording.stop()
-            print("stopped recording")
             camera?.cameraControl?.enableTorch(false)
             recording = null
             return
@@ -108,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         toneGen.startTone(ToneGenerator.TONE_CDMA_MED_L, 500)
 
         // create and start a new recording session
-        name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
+        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
             .format(System.currentTimeMillis())
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
@@ -116,10 +114,7 @@ class MainActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
                 put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/CameraX-Video")
             }
-
-            print("outside IF")
         }
-
 
         val mediaStoreOutputOptions = MediaStoreOutputOptions
             .Builder(contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
