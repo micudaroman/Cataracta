@@ -89,14 +89,6 @@ class MainActivity : AppCompatActivity() {
             print("stopped recording")
             camera?.cameraControl?.enableTorch(false)
             recording = null
-//////            todo go to the activity and pass src of the video captured
-//            intent = Intent(this, MediaPlayerActivity::class.java)
-//            intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-//
-//            Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/"+name+".mp4")
-//            Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-//            startActivity(intent)
-
             return
         }
 
@@ -112,13 +104,6 @@ class MainActivity : AppCompatActivity() {
             put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
                 put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/CameraX-Video")
-//                todo: toto here?
-//                intent = Intent(this, MediaPlayerActivity::class.java)
-//                intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-//
-//                Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/"+name+".mp4")
-//                Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-//                startActivity(intent)
             }
 
             print("outside IF")
@@ -155,8 +140,6 @@ class MainActivity : AppCompatActivity() {
                                 .show()
                             Log.d(TAG, msg)
 
-//                            todo do it here?
-//                            todo: toto here?
                             intent = Intent(this, MediaPlayerActivity::class.java)
                             intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
 
@@ -176,13 +159,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-
-////                todo try to place it here, no NOT HERE
-//                val path = MediaStore.Video.Media.RELATIVE_PATH.plus('\\').plus(name)
-//                print(path)
-//                intent = Intent(this, MediaPlayerActivity::class.java)
-//                intent.putExtra("path", path)
-//                startActivity(intent)
             }
     }
 

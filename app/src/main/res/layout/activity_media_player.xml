@@ -4,14 +4,11 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.exoplayer2.ui.StyledPlayerView
-        android:id="@+id/playerView"
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/player_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:auto_show="false"
-        app:resize_mode="fill"
-        app:surface_type="texture_view" />
+        android:layout_height="match_parent"
+        app:show_buffering="when_playing"
+        app:show_shuffle_button="true"/>
 
 </RelativeLayout>
