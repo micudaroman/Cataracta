@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
             // VideoCapture
             val recorder = Recorder.Builder()
-                .setQualitySelector(QualitySelector.from(Quality.HIGHEST))
+                .setQualitySelector(QualitySelector.from(Quality.UHD))
                 .build()
             videoCapture = VideoCapture.withOutput(recorder)
 
