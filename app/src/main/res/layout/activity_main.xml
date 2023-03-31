@@ -21,8 +21,8 @@
 
     <ImageView
         android:id="@+id/face_placement"
-        android:layout_width="278dp"
-        android:layout_height="399dp"
+        android:layout_width="249dp"
+        android:layout_height="396dp"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
