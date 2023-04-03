@@ -178,6 +178,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                             Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT)
                                 .show()
                             Log.d(TAG, msg)
+
+                            intent = Intent(this, MediaPlayerActivity::class.java)
+                            intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
+
+                            Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/"+name+".mp4")
+                            Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
+                            startActivity(intent)
+
                         } else {
                             recording?.close()
                             recording = null
