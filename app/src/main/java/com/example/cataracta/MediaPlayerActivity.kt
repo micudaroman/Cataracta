@@ -9,11 +9,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.MediaItem
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 
 
-class MediaPlayerActivity : AppCompatActivity() {
+@UnstableApi class MediaPlayerActivity : AppCompatActivity() {
     private lateinit var videoUri: Uri
     private var intent: Intent? = null
     private var path: String? = null
@@ -44,6 +45,8 @@ class MediaPlayerActivity : AppCompatActivity() {
         val player = ExoPlayer.Builder(this).build()
         // Attach player to the view.
         playerView.player = player
+        playerView.controllerAutoShow = false
+        player.setPlaybackSpeed(0.25F)
         // Set the media item to be played.
         player.setMediaItem(mediaItem)
         // Prepare the player.
