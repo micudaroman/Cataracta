@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
         // Noise
         val toneGen = ToneGenerator(AudioManager.STREAM_MUSIC, 1000)
-        toneGen.startTone(ToneGenerator.TONE_CDMA_MED_L, 1000)
+        toneGen.startTone(ToneGenerator.TONE_CDMA_MED_L, 500)
 
         // create and start a new recording session
         val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
@@ -145,6 +145,14 @@ class MainActivity : AppCompatActivity() {
                             Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT)
                                 .show()
                             Log.d(TAG, msg)
+
+                            intent = Intent(this, MediaPlayerActivity::class.java)
+                            intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
+
+                            Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/"+name+".mp4")
+                            Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
+                            startActivity(intent)
+
                         } else {
                             recording?.close()
                             recording = null
