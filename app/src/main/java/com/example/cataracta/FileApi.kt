@@ -24,8 +24,9 @@ interface FileApi {
 
     companion object {
 
-        const val URL = "http://147.175.186.10:5000/"
-        val logginLevel = HttpLoggingInterceptor.Level.BASIC  //changed, as BODY logging is no more required
+        const val URL = "http://147.175.121.168:5000/"
+        val logginLevel =
+            HttpLoggingInterceptor.Level.BASIC  //changed, as BODY logging is no more required
         val loggingInterceptor = HttpLoggingInterceptor().setLevel(logginLevel)
 
         operator fun invoke(): FileApi {
@@ -46,7 +47,5 @@ interface FileApi {
             return retrofit.create(FileApi::class.java)
         }
     }
-
-
-    }
+}
 

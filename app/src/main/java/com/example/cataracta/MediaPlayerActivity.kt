@@ -29,15 +29,16 @@ import retrofit2.Response
 import java.io.File
 
 
-@UnstableApi class MediaPlayerActivity : AppCompatActivity() {
+@UnstableApi
+class MediaPlayerActivity : AppCompatActivity() {
     private lateinit var videoUri: Uri
     private var intent: Intent? = null
     private var path: String? = null
     private lateinit var player: ExoPlayer
-    private lateinit var playerView : PlayerView
-    private lateinit var mediaItem : MediaItem
-    private var fileApi: FileApi? = null
-
+    private lateinit var playerView: PlayerView
+    private lateinit var mediaItem: MediaItem
+    private var fileApi: FileApi = FileApi.invoke()
+    private val uploadButton = findViewById<ImageButton>(R.id.my_image_button)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +57,6 @@ import java.io.File
             // For example, launch the code that reads or writes a file on external storage.
             // ...
 
-
         } else {
 
 //            // Permission hasn't been granted yet. Request it.
@@ -69,59 +69,50 @@ import java.io.File
         }
 
 
-        findViewById<ImageButton>(R.id.my_image_button).setOnClickListener {
-            Log.d(ContentValues.TAG , "onclick listener")
+        uploadButton.setOnClickListener {
+            val videoPath = path?.substringAfterLast("/")
+            //movies directory + app directory + filename
+            val file = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
+                "CameraX-Video/$videoPath"
+            )
+            Log.d(ContentValues.TAG + "file canRead", file.canRead().toString())
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
 
-            // Create an instance of the API interface
-            fileApi =  FileApi.invoke()
-            val uploadButton = findViewById<ImageButton>(R.id.my_image_button)
-            uploadButton.setOnClickListener {
-                val videoPath = path?.substringAfterLast("/")
-                //movies directory + app directory + filename
-                val file = File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
-                    "CameraX-Video/$videoPath"
-                )
-                Log.d(ContentValues.TAG +"file canRead", file.canRead().toString())
-                MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-
-                if (file.exists()) {
-                    Log.d(ContentValues.TAG, "file exists")
-                } else {
-                    Log.d(ContentValues.TAG, "error file doesnt exist")
-                }
-                val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
+            if (file.exists()) {
+                Log.d(ContentValues.TAG, "file exists")
+            } else {
+                Log.d(ContentValues.TAG, "error file doesnt exist")
+            }
+            val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
 //            LOGGING FILE CONTENT of request FILE
-                Log.d(ContentValues.TAG +"requestBody.tostring", requestBody.toString())
+            Log.d(ContentValues.TAG + "requestBody.tostring", requestBody.toString())
 
 //             Make the API call
-                val call1: Call<FileApi.UploadResponse> = fileApi!!.uploadImage(filePart)
-                call1.enqueue(object : Callback<FileApi.UploadResponse> {
+            val call1: Call<FileApi.UploadResponse> = fileApi!!.uploadImage(filePart)
+            call1.enqueue(object : Callback<FileApi.UploadResponse> {
 
-                    override fun onResponse(
-                        call: Call<FileApi.UploadResponse>,
-                        response: Response<FileApi.UploadResponse>
-                    ) {
-                        Log.d(ContentValues.TAG, "Error body: ${response.message().toString()}")
-                    }
+                override fun onResponse(
+                    call: Call<FileApi.UploadResponse>,
+                    response: Response<FileApi.UploadResponse>
+                ) {
+                    Log.d(ContentValues.TAG, "Error body: ${response.message().toString()}")
+                }
 
-                    override fun onFailure(call: Call<FileApi.UploadResponse>, t: Throwable) {
-                        Log.d(ContentValues.TAG, "Upload failed with error: ${t.message}")
-                        val errorBody = t.message
-                        Log.d(ContentValues.TAG, "Error body: $errorBody")
-                    }
-                })
-            }
-
+                override fun onFailure(call: Call<FileApi.UploadResponse>, t: Throwable) {
+                    Log.d(ContentValues.TAG, "Upload failed with error: ${t.message}")
+                    val errorBody = t.message
+                    Log.d(ContentValues.TAG, "Error body: $errorBody")
+                }
+            })
         }
-
 
 
         // Set up the player instance
         player = ExoPlayer.Builder(this).build()
 
-        playerView=findViewById(R.id.player_view)
+        playerView = findViewById(R.id.player_view)
         // Bind the player to the view.
         playerView.player = player
 
@@ -144,7 +135,7 @@ import java.io.File
         player.prepare()
 //        player.play()
 
-}
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -161,10 +152,11 @@ import java.io.File
         super.onPause()
     }
 
-    override fun onResume(){
+    override fun onResume() {
         super.onResume()
 
     }
+
     companion object {
         private const val TAG = "Cataracta/MediaPlayer"
     }
