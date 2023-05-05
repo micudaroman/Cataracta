@@ -12,6 +12,6 @@
     <string name="info_text_2">2. Uistite sa, že tvár snímanej osoby sa nachádza vo vyznačenej oblasti a telefón držíte na úrovni očí</string>
     <string name="info_text_3">3. Uistite sa, že snímaná osoba má silno zatvorené oči a nič ich nezakrýva (okuliare, šošovky, vlasy)</string>
     <string name="info_text_4">4. Informujte snímanú osobu, nech po zaznení tónu rýchlo otvorí doširoka oči</string>
-    <string name="info_text_5">5. Spustite snímanie - zaznie tón</string>
+    <string name="info_text_5">5. Po 2 sekundách ukončite snímanie</string>
     <string name="info_text_6">6. Počkajte 2 sekundy a ukončite snímanie</string>
 </resources>
