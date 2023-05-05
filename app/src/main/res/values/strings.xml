@@ -8,10 +8,10 @@
     <string name="stop_capture">Skončiť snímanie</string>
     <string name="info_title">Postup snímania</string>
     <string name="info_button">OK</string>
-    <string name="info_text_1">1. Uistite sa, že tvár snímanej osoby sa nachádza vo vyznačenej oblasti</string>
-    <string name="info_text_2">2. Uistite sa, že snímaná osoba má silno zatvorené oči</string>
-    <string name="info_text_3">3. Informujte snímanú osobu, nech po doznení tónu rýchlo otvorí doširoka očiotvorí doširoka oči</string>
-    <string name="info_text_4">4. Spustite snímanie - zaznie tón</string>
-    <string name="info_text_5">5. Po doznení tónu, snímaná osoba rýchlo otvorí doširoka oči</string>
+    <string name="info_text_1">1. Uistite sa, že fotíte v úplnej alebo takmer úplnej tme</string>
+    <string name="info_text_2">2. Uistite sa, že tvár snímanej osoby sa nachádza vo vyznačenej oblasti a telefón držíte na úrovni očí</string>
+    <string name="info_text_3">3. Uistite sa, že snímaná osoba má silno zatvorené oči a nič ich nezakrýva (okuliare, šošovky, vlasy)</string>
+    <string name="info_text_4">4. Informujte snímanú osobu, nech po zaznení tónu rýchlo otvorí doširoka oči</string>
+    <string name="info_text_5">5. Spustite snímanie - zaznie tón</string>
     <string name="info_text_6">6. Počkajte 2 sekundy a ukončite snímanie</string>
 </resources>
