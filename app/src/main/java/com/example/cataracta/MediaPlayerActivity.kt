@@ -86,6 +86,7 @@ class MediaPlayerActivity : AppCompatActivity() {
                 Log.d(ContentValues.TAG, "file exists")
             } else {
                 Log.d(ContentValues.TAG, "error file doesnt exist")
+                return@setOnClickListener
             }
             val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
@@ -93,15 +94,27 @@ class MediaPlayerActivity : AppCompatActivity() {
             Log.d(ContentValues.TAG + "requestBody.tostring", requestBody.toString())
 
 //             Make the API call
-            val call1: Call<FileApi.UploadResponse> = fileApi!!.uploadImage(filePart)
-            call1.enqueue(object : Callback<FileApi.UploadResponse> {
+            val call: Call<FileApi.UploadResponse> = fileApi!!.uploadImage(filePart)
+            call.enqueue(object : Callback<FileApi.UploadResponse> {
 
                 override fun onResponse(
                     call: Call<FileApi.UploadResponse>,
                     response: Response<FileApi.UploadResponse>
                 ) {
-                    Log.d(ContentValues.TAG, "Error body: ${response.message().toString()}")
+                    if (response.isSuccessful) {
+                        val uploadResponse = response.body()
+                        if (uploadResponse != null) {
+                            val leftEye = uploadResponse.left_eye
+                            val rightEye = uploadResponse.right_eye
+                            Log.d(ContentValues.TAG, "Upload successful. Left eye: $leftEye, Right eye: $rightEye")
+                        } else {
+                            Log.d(ContentValues.TAG, "Upload successful, but response body was null")
+                        }
+                    } else {
+                        Log.d(ContentValues.TAG, "Upload failed with error: ${response.message()}")
+                    }
                 }
+
 
                 override fun onFailure(call: Call<FileApi.UploadResponse>, t: Throwable) {
                     Log.d(ContentValues.TAG, "Upload failed with error: ${t.message}")

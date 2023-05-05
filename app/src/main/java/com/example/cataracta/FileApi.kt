@@ -20,7 +20,10 @@ interface FileApi {
         @Part file: MultipartBody.Part
     ): Call<UploadResponse>
 
-    data class UploadResponse(val success: String)
+    data class UploadResponse(
+        val left_eye: String,
+        val right_eye: String,
+    )
 
     companion object {
 
