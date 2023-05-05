@@ -9,6 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:show_buffering="when_playing"
-        app:show_shuffle_button="true"/>
+        app:show_shuffle_button="true">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/my_image_button"
+            android:layout_width="133dp"
+            android:layout_height="100dp"
+            android:background="@drawable/upload"/>
+    </androidx.media3.ui.PlayerView>
 
 </RelativeLayout>
