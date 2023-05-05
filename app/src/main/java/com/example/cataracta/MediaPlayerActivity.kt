@@ -38,12 +38,15 @@ class MediaPlayerActivity : AppCompatActivity() {
     private lateinit var playerView: PlayerView
     private lateinit var mediaItem: MediaItem
     private var fileApi: FileApi = FileApi.invoke()
-    private val uploadButton = findViewById<ImageButton>(R.id.my_image_button)
+//    private val uploadButton = findViewById<ImageButton>(R.id.my_image_button)
+    private lateinit var uploadButton: ImageButton // declare the variable here
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media_player)
+        uploadButton=findViewById<ImageButton>(R.id.my_image_button)
         Log.d(TAG, "mediaPlayer.onCreate()")
 
 
