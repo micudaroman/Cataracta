@@ -5,6 +5,10 @@ import android.Manifest
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Build
@@ -15,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.PopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -37,7 +42,7 @@ import java.util.concurrent.Executors
 typealias LumaListener = (luma: Double) -> Unit
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SensorEventListener {
     var flashLightStatus: Boolean = false
     private lateinit var viewBinding: ActivityMainBinding
 
@@ -48,6 +53,10 @@ class MainActivity : AppCompatActivity() {
     private var camera: Camera? = null
 
     private lateinit var cameraExecutor: ExecutorService
+
+    private lateinit var sensorManager: SensorManager
+    private var brightness: Sensor? = null
+    private lateinit var lumens: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,15 +82,39 @@ class MainActivity : AppCompatActivity() {
         viewBinding.infoButton.setOnClickListener {
             showPopup()
         }
+
+        lumens = findViewById(R.id.lumen)
+
+        setupSensorStuff()
     }
 
+    /// LIGHT SENSOR [start]
+    private fun setupSensorStuff() {
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        brightness = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+    }
 
-    private fun takePhoto() {}
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_LIGHT) {
+            val light = event.values[0].toInt()
+            lumens.text = light.toString()
+        }
+    }
 
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        return
+    }
 
     override fun onResume() {
         super.onResume()
+        sensorManager.registerListener(this, brightness, SensorManager.SENSOR_DELAY_NORMAL)
     }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+    /// LIGHT SENSOR [end]
 
     // Implements VideoCapture use case, including start and stop capturing.
     private fun captureVideo() {
@@ -188,7 +221,7 @@ class MainActivity : AppCompatActivity() {
 
             // VideoCapture
             val recorder = Recorder.Builder()
-                .setQualitySelector(QualitySelector.from(Quality.HIGHEST))
+                .setQualitySelector(QualitySelector.from(Quality.UHD))
                 .build()
             videoCapture = VideoCapture.withOutput(recorder)
 
