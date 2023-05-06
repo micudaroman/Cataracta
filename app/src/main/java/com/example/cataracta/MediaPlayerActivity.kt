@@ -10,10 +10,9 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
-import android.widget.ImageButton
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
@@ -32,145 +31,98 @@ import java.io.File
 @UnstableApi
 class MediaPlayerActivity : AppCompatActivity() {
     private lateinit var videoUri: Uri
-    private var intent: Intent? = null
     private var path: String? = null
     private lateinit var player: ExoPlayer
     private lateinit var playerView: PlayerView
     private lateinit var mediaItem: MediaItem
-    private var fileApi: FileApi = FileApi.invoke()
-//    private val uploadButton = findViewById<ImageButton>(R.id.my_image_button)
-    private lateinit var uploadButton: ImageButton // declare the variable here
+    private lateinit var uploadButton: Button
+    private val fileApi: FileApi = FileApi.invoke()
 
+    private fun setupViews() {
+        uploadButton = findViewById(R.id.my_image_button)
+        uploadButton.setOnClickListener { uploadVideo() }
+    }
 
+    private fun setupPermissions() {
+        val uri = Uri.parse("package:com.example.cataracta")
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri))
+        }
+    }
+
+    private fun setupPlayer() {
+        path = intent?.getStringExtra("path")
+        videoUri = Uri.parse(path)
+        mediaItem = MediaItem.fromUri(videoUri)
+        player = ExoPlayer.Builder(this).build()
+        playerView = findViewById(R.id.player_view)
+        playerView.player = player
+        playerView.controllerAutoShow = false
+        player.setPlaybackSpeed(0.25F)
+        player.setMediaItem(mediaItem)
+        player.prepare()
+    }
+
+    private fun uploadVideo() {
+        val videoPath = path?.substringAfterLast("/")
+        val file = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
+            "CameraX-Video/$videoPath"
+
+        )
+        if (file.exists()) {
+            Log.d(ContentValues.TAG, "file exists")
+        } else {
+            Log.d(ContentValues.TAG, "error file doesnt exist")
+            return
+        }
+        val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
+        fileApi.uploadImage(filePart).enqueue(object : Callback<FileApi.UploadResponse> {
+            override fun onResponse(
+                call: Call<FileApi.UploadResponse>,
+                response: Response<FileApi.UploadResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val uploadResponse = response.body()
+                    if (uploadResponse != null) {
+                        val leftEye = uploadResponse.left_eye
+                        val rightEye = uploadResponse.right_eye
+                        Log.d(
+                            ContentValues.TAG,
+                            "Upload successful. Left eye: $leftEye, Right eye: $rightEye"
+                        )
+                    } else {
+                        Log.d(ContentValues.TAG, "Upload successful, but response body was null")
+                    }
+                } else {
+                    Log.d(ContentValues.TAG, "Upload failed with error: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<FileApi.UploadResponse>, t: Throwable) {
+                Log.d(ContentValues.TAG, "Upload failed with error: ${t.message}")
+                val errorBody = t.message
+                Log.d(ContentValues.TAG, "Error body: $errorBody")
+            }
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_media_player)
-        uploadButton=findViewById<ImageButton>(R.id.my_image_button)
         Log.d(TAG, "mediaPlayer.onCreate()")
-
-
-        val uri = Uri.parse("package:com.example.cataracta")
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.MANAGE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            // Permission already granted. Launch the part of the app that requires the permission.
-            // For example, launch the code that reads or writes a file on external storage.
-            // ...
-
-        } else {
-
-//            // Permission hasn't been granted yet. Request it.
-            startActivity(
-                Intent(
-                    Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                    uri
-                )
-            )
-        }
-
-
-        uploadButton.setOnClickListener {
-            val videoPath = path?.substringAfterLast("/")
-            //movies directory + app directory + filename
-            val file = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
-                "CameraX-Video/$videoPath"
-            )
-            Log.d(ContentValues.TAG + "file canRead", file.canRead().toString())
-            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-
-            if (file.exists()) {
-                Log.d(ContentValues.TAG, "file exists")
-            } else {
-                Log.d(ContentValues.TAG, "error file doesnt exist")
-                return@setOnClickListener
-            }
-            val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-            val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
-//            LOGGING FILE CONTENT of request FILE
-            Log.d(ContentValues.TAG + "requestBody.tostring", requestBody.toString())
-
-//             Make the API call
-            val call: Call<FileApi.UploadResponse> = fileApi!!.uploadImage(filePart)
-            call.enqueue(object : Callback<FileApi.UploadResponse> {
-
-                override fun onResponse(
-                    call: Call<FileApi.UploadResponse>,
-                    response: Response<FileApi.UploadResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val uploadResponse = response.body()
-                        if (uploadResponse != null) {
-                            val leftEye = uploadResponse.left_eye
-                            val rightEye = uploadResponse.right_eye
-                            Log.d(ContentValues.TAG, "Upload successful. Left eye: $leftEye, Right eye: $rightEye")
-                        } else {
-                            Log.d(ContentValues.TAG, "Upload successful, but response body was null")
-                        }
-                    } else {
-                        Log.d(ContentValues.TAG, "Upload failed with error: ${response.message()}")
-                    }
-                }
-
-
-                override fun onFailure(call: Call<FileApi.UploadResponse>, t: Throwable) {
-                    Log.d(ContentValues.TAG, "Upload failed with error: ${t.message}")
-                    val errorBody = t.message
-                    Log.d(ContentValues.TAG, "Error body: $errorBody")
-                }
-            })
-        }
-
-
-        // Set up the player instance
-        player = ExoPlayer.Builder(this).build()
-
-        playerView = findViewById(R.id.player_view)
-        // Bind the player to the view.
-        playerView.player = player
-
-        intent = getIntent()
-        path = intent?.getStringExtra("path")
-        Log.d(TAG, "mediaPlayer.onCreate()++")
-        Log.d(TAG, "$path")
-        videoUri = Uri.parse(path)
-        mediaItem = MediaItem.fromUri(videoUri)
-
-        // Instantiate the player.
-        val player = ExoPlayer.Builder(this).build()
-        // Attach player to the view.
-        playerView.player = player
-        playerView.controllerAutoShow = false
-        player.setPlaybackSpeed(0.25F)
-        // Set the media item to be played.
-        player.setMediaItem(mediaItem)
-        // Prepare the player.
-        player.prepare()
-//        player.play()
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+        setupViews()
+        setupPermissions()
+        setupPlayer()
     }
 
     override fun onStart() {
         super.onStart()
         // Set the MediaPlayer to play the video
         Log.d(TAG, "mediaPlayer.onstart()")
-        Log.d(TAG, "$path")
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
     }
 
     companion object {
