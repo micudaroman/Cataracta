@@ -29,22 +29,16 @@ import java.io.File
     private var path: String? = null
     private lateinit var uploadButton: Button
     private val fileApi: FileApi = FileApi.invoke()
+    private lateinit var progressBar : ProgressBar
 
 
     private fun setupViews(view: View) {
         path = requireArguments().getString("path")
         uploadButton = view.findViewById(R.id.upload_button)
+        progressBar = view.findViewById(R.id.progressBar1)
         uploadButton.setOnClickListener { uploadVideo() }
     }
 
-    private fun setupPermissions() {
-        val uri = Uri.parse("package:com.example.cataracta")
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri))
-        }
-    }
 
     private fun uploadVideo() {
         val videoPath = path?.substringAfterLast("/")
@@ -68,6 +62,7 @@ import java.io.File
                 if (response.isSuccessful) {
                     val uploadResponse = response.body()
                     if (uploadResponse != null) {
+                        progressBar.visibility=View.INVISIBLE  //GONE
                         val leftEye = uploadResponse.left_eye
                         val rightEye = uploadResponse.right_eye
 
@@ -104,7 +99,6 @@ import java.io.File
         val view = inflater.inflate(R.layout.fragment_upload_video, container, false)
         Log.d(TAG, "UploadVideo.onCreate()")
         setupViews(view)
-        setupPermissions()
         return view
     }
 

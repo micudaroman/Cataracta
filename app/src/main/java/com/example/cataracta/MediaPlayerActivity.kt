@@ -43,15 +43,6 @@ class MediaPlayerActivity : AppCompatActivity() {
         uploadButton.setOnClickListener { uploadVideo() }
     }
 
-    private fun setupPermissions() {
-        val uri = Uri.parse("package:com.example.cataracta")
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri))
-        }
-    }
-
     private fun setupPlayer() {
         path = intent?.getStringExtra("path")
         videoUri = Uri.parse(path)
@@ -70,7 +61,6 @@ class MediaPlayerActivity : AppCompatActivity() {
         val file = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
             "CameraX-Video/$videoPath"
-
         )
         if (file.exists()) {
             Log.d(ContentValues.TAG, "file exists")
@@ -115,7 +105,6 @@ class MediaPlayerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_media_player)
         Log.d(TAG, "mediaPlayer.onCreate()")
         setupViews()
-        setupPermissions()
         setupPlayer()
     }
 
