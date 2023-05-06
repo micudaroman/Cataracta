@@ -15,10 +15,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
-import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.PlayerView
+import com.example.cataracta.ui.irisPreview.IrisPreviewFragment
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -27,18 +25,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-@UnstableApi class mediaPlayerFragment: Fragment(R.layout.fragment_media_player) {
-    private lateinit var videoUri: Uri
+@UnstableApi class UploadVideoFragment: Fragment(R.layout.fragment_media_player) {
     private var path: String? = null
-    private lateinit var player: ExoPlayer
-    private lateinit var playerView: PlayerView
-    private lateinit var mediaItem: MediaItem
     private lateinit var uploadButton: Button
     private val fileApi: FileApi = FileApi.invoke()
 
 
     private fun setupViews(view: View) {
-        uploadButton = view.findViewById(R.id.my_image_button)
+        path = requireArguments().getString("path")
+        uploadButton = view.findViewById(R.id.upload_button)
         uploadButton.setOnClickListener { uploadVideo() }
     }
 
@@ -49,19 +44,6 @@ import java.io.File
         ) {
             startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri))
         }
-    }
-
-    private fun setupPlayer() {
-        path = requireArguments().getString("path")
-        videoUri = Uri.parse(path)
-        mediaItem = MediaItem.fromUri(videoUri)
-        player = ExoPlayer.Builder(requireContext()).build()
-        playerView = requireView().findViewById(R.id.player_view)
-        playerView.player = player
-        playerView.controllerAutoShow = false
-        player.setPlaybackSpeed(0.25F)
-        player.setMediaItem(mediaItem)
-        player.prepare()
     }
 
     private fun uploadVideo() {
@@ -88,6 +70,12 @@ import java.io.File
                     if (uploadResponse != null) {
                         val leftEye = uploadResponse.left_eye
                         val rightEye = uploadResponse.right_eye
+
+                        val bundle = Bundle()
+                        bundle.putString("leftEye", leftEye)
+                        bundle.putString("rightEye", rightEye)
+                        val fragment = IrisPreviewFragment()
+                        fragment.arguments = bundle
                         Log.d(
                             ContentValues.TAG,
                             "Upload successful. Left eye: $leftEye, Right eye: $rightEye"
@@ -113,22 +101,21 @@ import java.io.File
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.activity_media_player, container, false)
-        Log.d(TAG, "mediaPlayer.onCreate()")
+        val view = inflater.inflate(R.layout.fragment_upload_video, container, false)
+        Log.d(TAG, "UploadVideo.onCreate()")
         setupViews(view)
         setupPermissions()
-        setupPlayer()
         return view
     }
 
     override fun onResume() {
         super.onResume()
         // Set the MediaPlayer to play the video
-        Log.d(TAG, "mediaPlayer.onResume()")
+        Log.d(TAG, "UploadVideo.onResume()")
     }
 
     companion object {
-        private const val TAG = "Cataracta/MediaPlayer"
+        private const val TAG = "Cataracta/UploadVideo"
     }
 
 }

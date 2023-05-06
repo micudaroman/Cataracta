@@ -3,7 +3,6 @@ package com.example.cataracta
 
 import android.Manifest
 import android.content.ContentValues
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -32,6 +31,7 @@ import androidx.camera.video.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
+import androidx.media3.common.util.UnstableApi
 import com.example.cataracta.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,7 +42,7 @@ import java.util.concurrent.Executors
 typealias LumaListener = (luma: Double) -> Unit
 
 
-class MainActivity : AppCompatActivity(), SensorEventListener {
+@UnstableApi class MainActivity : AppCompatActivity(), SensorEventListener {
     var flashLightStatus: Boolean = false
     private lateinit var viewBinding: ActivityMainBinding
 
@@ -179,12 +179,25 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                                 .show()
                             Log.d(TAG, msg)
 
-                            intent = Intent(this, MediaPlayerActivity::class.java)
-                            intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
+//                            intent = Intent(this, MediaPlayerActivity::class.java)
+//                            intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
+//                            startActivity(intent)\
 
-                            Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/"+name+".mp4")
-                            Log.d(TAG, "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-                            startActivity(intent)
+
+                            Log.d(TAG+"this file will be played", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
+
+                            val bundle = Bundle()
+                            bundle.putString("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
+                            val mediaPlayerFragment = MediaPlayerFragment()
+                            mediaPlayerFragment.arguments = bundle
+
+//                            val transaction: FragmentTransaction =
+//                                supportFragmentManager.beginTransaction()
+//                            transaction.replace(R.id.container, mediaPlayerFragment)
+//                            transaction.addToBackStack(null)
+//                            transaction.commit()
+//                            Log.d(TAG, "failure")
+
 
                         } else {
                             recording?.close()
