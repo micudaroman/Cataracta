@@ -15,4 +15,5 @@
     <string name="info_text_5">5. Spustite snímanie - zaznie tón</string>
     <string name="info_text_6">6. Počkajte 2 sekundy a ukončite snímanie</string>
     <string name="upload_button">Analyzovať</string>
+    <string name="send_button">Poslať</string>
 </resources>
