@@ -22,10 +22,7 @@ class MediaPlayerFragment: Fragment() {
     private lateinit var playerView: PlayerView
     private lateinit var mediaItem: MediaItem
     private lateinit var uploadButton: Button
-
     private lateinit var binding: FragmentMediaPlayerBinding
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,11 +31,7 @@ class MediaPlayerFragment: Fragment() {
     ): View? {;
         binding = FragmentMediaPlayerBinding.inflate(inflater, container, false)
         return binding.root
-//        val view = inflater.inflate(R.layout.fragment_media_player, container, false)
-//        Log.d(TAG, "mediaPlayer.onCreate()")
-//        setupViews(view)
-//        setupPlayer()
-//        return view
+        setupPlayer()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,11 +47,6 @@ class MediaPlayerFragment: Fragment() {
         }
     }
 
-    private fun setupViews(view: View?) {
-        uploadButton = requireView().findViewById(R.id.analysis_button)
-        uploadButton.setOnClickListener { uploadVideo() }
-    }
-
     private fun setupPlayer() {
         path = requireArguments().getString("path")
         videoUri = Uri.parse(path)
@@ -66,39 +54,10 @@ class MediaPlayerFragment: Fragment() {
         player = ExoPlayer.Builder(requireContext()).build()
         playerView = requireView().findViewById(R.id.player_view)
         playerView.player = player
-//        playerView.controllerAutoShow = false
         player.setPlaybackSpeed(0.25F)
         player.setMediaItem(mediaItem)
         player.prepare()
     }
-
-    private fun uploadVideo() {
-
-
-
-//        intent = Intent(this, MediaPlayerActivity::class.java)
-//        intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-//        Log.d(MainActivity.TAG, "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-//        startActivity(intent)
-
-        val bundle = Bundle()
-        bundle.putString("path", "$path")
-        val mediaPlayerFragment = UploadVideoFragment()
-        mediaPlayerFragment.arguments = bundle
-    }
-
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setupViews(view)
-//        setupPlayer()
-//    }
-
-//    override fun  onViewCreated(view: View, savedInstanceState: Bundle?){
-//        super.onViewCreated(view, savedInstanceState)
-//        setupViews(view)
-//        setupPlayer()
-//    }
 
     override fun onStart() {
         super.onStart()

@@ -42,7 +42,6 @@ class RecordFragment: Fragment() {
     private var recording: Recording? = null
     private var camera: Camera? = null
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var lumens: TextView
     private var imageCapture: ImageCapture? = null
 
     private lateinit var binding: RecordBinding
@@ -60,30 +59,17 @@ class RecordFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         binding.videoCaptureButton.setOnClickListener { captureVideo() }
-
         cameraExecutor = Executors.newSingleThreadExecutor()
-
         binding.infoButton.setOnClickListener {
             showPopup()
         }
         Toast.makeText(requireContext(),
             "Start camera",
             Toast.LENGTH_SHORT).show()
-
-
         startCamera()
 
-        lumens = view.findViewById(R.id.lumen)
-
-//        setupSensorStuff()
     }
-
-//    private fun setupSensorStuff() {
-//        sensorManager = getSystemService(AppCompatActivity.SENSOR_SERVICE) as SensorManager
-//        brightness = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
-//    }
 
     companion object {
         private const val TAG = "Cataracta"
@@ -103,13 +89,9 @@ class RecordFragment: Fragment() {
 
     private fun captureVideo() {
         val videoCapture = this.videoCapture ?: return
-
         binding.videoCaptureButton.isEnabled = false
-
         val curRecording = recording
-
         camera?.cameraControl?.enableTorch(true)
-
         if (curRecording != null) {
             // Stop the current recording session.
             curRecording.stop()
@@ -123,7 +105,7 @@ class RecordFragment: Fragment() {
         toneGen.startTone(ToneGenerator.TONE_CDMA_MED_L, 500)
 
         // create and start a new recording session
-        val name = SimpleDateFormat(RecordFragment.FILENAME_FORMAT, Locale.US)
+        val name = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
             .format(System.currentTimeMillis())
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
@@ -161,29 +143,17 @@ class RecordFragment: Fragment() {
                                     "${recordEvent.outputResults.outputUri}"
                             Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
                                 .show()
-                            Log.d(RecordFragment.TAG, msg)
+                            Log.d(TAG, msg)
 
-// tomas
-//                            intent = Intent(this, MediaPlayerActivity::class.java)
-//                            intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-//                            startActivity(intent)
-
-
-                            Log.d(RecordFragment.TAG +"this file will be played", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-
-
-
+                            Log.d(TAG +"this file will be played", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
 
                             val args = Bundle()
                             args.putString("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-
                             requireActivity().supportFragmentManager
                                 .beginTransaction()
                                 .replace(R.id.my_fragment_container, MediaPlayerFragment::class.java, args)
                                 .addToBackStack(RecordFragment::class.java.name)
                                 .commit()
-
-
 
                         } else {
                             recording?.close()
@@ -234,7 +204,6 @@ class RecordFragment: Fragment() {
                 // Bind use cases to camera
                 camera = cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview, imageCapture, videoCapture)
-
 
             } catch(exc: Exception) {
                 Log.e(RecordFragment.TAG, "Use case binding failed", exc)

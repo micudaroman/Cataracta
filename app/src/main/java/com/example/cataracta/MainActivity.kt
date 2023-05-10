@@ -13,16 +13,13 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import android.Manifest
 import android.os.Build
-import androidx.appcompat.widget.Toolbar
-import androidx.navigation.findNavController
-import androidx.navigation.ui.navigateUp
+
 import com.example.cataracta.ui.record.RecordFragment
 
 
 class MainActivity : AppCompatActivity(){
 
     private lateinit var cameraExecutor: ExecutorService
-//    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,17 +28,6 @@ class MainActivity : AppCompatActivity(){
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
-
-//        setContentView(R.layout.navigation_activity)
-//
-//
-//        supportFragmentManager
-//            .beginTransaction()
-//            .add(R.id.my_fragment_container, RecordFragment())
-//            .commit()
-
-
-//        val navController = host.navController
     }
 
     companion object {
