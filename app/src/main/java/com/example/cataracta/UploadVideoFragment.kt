@@ -13,9 +13,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.media3.common.util.UnstableApi
 import com.example.cataracta.databinding.FragmentUploadVideoBinding
 import com.example.cataracta.ui.irisPreview.IrisPreviewFragment
@@ -33,6 +35,7 @@ class UploadVideoFragment: Fragment() {
     private val fileApi: FileApi = FileApi.invoke()
     private lateinit var binding: FragmentUploadVideoBinding
     private val args = Bundle()
+    private lateinit var progressBar: ProgressBar
 
 
     override fun onCreateView(
@@ -42,44 +45,24 @@ class UploadVideoFragment: Fragment() {
     ): View? {
         binding = FragmentUploadVideoBinding.inflate(inflater, container, false)
         return binding.root
-
-//        val view = inflater.inflate(R.layout.fragment_upload_video, container, false)
-//        Log.d(TAG, "UploadVideo.onCreate()")
-//        setupViews(view)
-//        setupPermissions()
-//        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        path = savedInstanceState?.getString("path")
 
-        uploadVideo()
-        binding.uploadButton.setOnClickListener{
-            requireActivity().supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.my_fragment_container, IrisPreviewFragment::class.java, args)
-                .addToBackStack(UploadVideoFragment::class.java.name)
-                .commit()
-
-        }
-    }
-    private fun setupViews(view: View) {
-        path = args.getString("path")
         uploadButton = view.findViewById(R.id.upload_button)
-        uploadButton.setOnClickListener { uploadVideo() }
-    }
-
-    private fun setupPermissions() {
-        val uri = Uri.parse("package:com.example.cataracta")
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            startActivity(Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri))
+        uploadButton.setOnClickListener{
+            progressBar = view.findViewById(R.id.progressBar)
+            progressBar.visibility = View.VISIBLE
+            uploadButton.isEnabled = false
+            uploadVideo()
         }
     }
 
     private fun uploadVideo() {
-        val videoPath = path?.substringAfterLast("/")
+        val videoPath = path
+            Log.d(ContentValues.TAG, videoPath.toString())
         val file = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
             "CameraX-Video/$videoPath"
@@ -105,6 +88,15 @@ class UploadVideoFragment: Fragment() {
 
                         args.putString("leftEye", leftEye)
                         args.putString("rightEye", rightEye)
+
+                        progressBar.visibility = View.INVISIBLE
+                        uploadButton.isEnabled = true
+
+                        requireActivity().supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.my_fragment_container, IrisPreviewFragment::class.java, args)
+                            .addToBackStack(UploadVideoFragment::class.java.name)
+                            .commit()
                         Log.d(
                             ContentValues.TAG,
                             "Upload successful. Left eye: $leftEye, Right eye: $rightEye"

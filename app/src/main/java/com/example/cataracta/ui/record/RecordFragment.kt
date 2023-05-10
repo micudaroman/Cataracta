@@ -23,6 +23,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
 import android.content.pm.PackageManager
+import android.view.WindowManager
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -77,14 +79,14 @@ class RecordFragment: Fragment() {
     }
 
     private fun showPopup() {
-//        val popupView = LayoutInflater.from(this).inflate(R.layout.info_popup_window, null)
-//        val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-//        popupWindow.isFocusable = true
-//        popupWindow.showAsDropDown(viewBinding.popupHelper, 0, 0)
-//
-//        popupView.findViewById<View>(R.id.info_button_ok).setOnClickListener {
-//            popupWindow.dismiss()
-//        }
+        val popupView = LayoutInflater.from(requireContext()).inflate(R.layout.info_popup_window, null)
+        val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        popupWindow.isFocusable = true
+        popupWindow.showAsDropDown(binding.popupHelper, 0, 0)
+
+        popupView.findViewById<View>(R.id.info_button_ok).setOnClickListener {
+            popupWindow.dismiss()
+        }
     }
 
     private fun captureVideo() {

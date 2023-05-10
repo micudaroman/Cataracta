@@ -1,5 +1,6 @@
 package com.example.cataracta
 
+import android.content.ContentValues
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -18,10 +19,10 @@ import com.example.cataracta.ui.record.RecordFragment
 class MediaPlayerFragment: Fragment() {
     private lateinit var videoUri: Uri
     private var path: String? = null
+    private var args = Bundle()
     private lateinit var player: ExoPlayer
     private lateinit var playerView: PlayerView
     private lateinit var mediaItem: MediaItem
-    private lateinit var uploadButton: Button
     private lateinit var binding: FragmentMediaPlayerBinding
 
     override fun onCreateView(
@@ -31,13 +32,11 @@ class MediaPlayerFragment: Fragment() {
     ): View? {;
         binding = FragmentMediaPlayerBinding.inflate(inflater, container, false)
         return binding.root
-        setupPlayer()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.analysisButton.setOnClickListener{
-            val args = Bundle()
             requireActivity().supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.my_fragment_container, UploadVideoFragment::class.java, args)
@@ -45,10 +44,13 @@ class MediaPlayerFragment: Fragment() {
                 .commit()
 
         }
+        setupPlayer()
     }
 
     private fun setupPlayer() {
         path = requireArguments().getString("path")
+        Log.d(ContentValues.TAG, path.toString())
+        args.putString("path", path)
         videoUri = Uri.parse(path)
         mediaItem = MediaItem.fromUri(videoUri)
         player = ExoPlayer.Builder(requireContext()).build()
