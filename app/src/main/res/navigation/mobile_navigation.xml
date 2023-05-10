@@ -36,6 +36,7 @@
     <fragment
         android:id="@+id/irisPreviewFragment"
         android:name="com.example.cataracta.ui.irisPreview.IrisPreviewFragment"
+        android:label="IrisPreviewFragment"
         app:defaultNavHost="true"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
@@ -43,8 +44,8 @@
         app:popExitAnim="@anim/slide_out_right"
         tools:layout="@layout/iris_preview">
         <action
-            android:id="@+id/action_irisPreviewFragment_to_recordFragment"
-            app:destination="@id/recordFragment" />
+            android:id="@+id/action_irisPreviewFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
     <fragment
         android:id="@+id/recordFragment"
@@ -59,5 +60,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.example.cataracta.ResultFragment"
+        android:label="ResultFragment" >
+        <action
+            android:id="@+id/action_resultFragment_to_recordFragment"
+            app:destination="@id/recordFragment" />
     </fragment>
 </navigation>

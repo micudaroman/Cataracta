@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.ImageView
 import com.example.cataracta.R
 import com.example.cataracta.databinding.IrisPreviewBinding
+import com.example.cataracta.ResultFragment
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
 
@@ -20,7 +21,7 @@ class IrisPreviewFragment: Fragment() {
     private lateinit var ivLeftEye: ImageView
     private lateinit var ivRightEye: ImageView
     private lateinit var btnUpload: Button
-
+    private val args = Bundle()
     private lateinit var binding: IrisPreviewBinding
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +33,8 @@ class IrisPreviewFragment: Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         ivLeftEye = view.findViewById(R.id.ivLeftEye)
         ivRightEye = view.findViewById(R.id.ivRightEye)
@@ -55,8 +58,13 @@ class IrisPreviewFragment: Fragment() {
             ivRightEye.setImageBitmap(rightEyeBitmap)
         }
 
-        btnUpload.setOnClickListener{
+        binding.btnUploadIrises.setOnClickListener{
             //Upload to BE for detecting cataract
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.my_fragment_container, ResultFragment::class.java, null)
+                .addToBackStack(IrisPreviewFragment::class.java.name)
+                .commit()
         }
 
     }

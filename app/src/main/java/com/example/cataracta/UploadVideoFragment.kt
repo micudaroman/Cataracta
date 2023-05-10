@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
 import androidx.media3.common.util.UnstableApi
@@ -26,12 +27,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class UploadVideoFragment: Fragment(R.layout.fragment_media_player) {
+class UploadVideoFragment: Fragment() {
     private var path: String? = null
     private lateinit var uploadButton: Button
     private val fileApi: FileApi = FileApi.invoke()
-
     private lateinit var binding: FragmentUploadVideoBinding
+    private val args = Bundle()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +55,6 @@ class UploadVideoFragment: Fragment(R.layout.fragment_media_player) {
 
         uploadVideo()
         binding.uploadButton.setOnClickListener{
-            val args = Bundle()
             requireActivity().supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.my_fragment_container, IrisPreviewFragment::class.java, args)
@@ -63,7 +64,7 @@ class UploadVideoFragment: Fragment(R.layout.fragment_media_player) {
         }
     }
     private fun setupViews(view: View) {
-        path = requireArguments().getString("path")
+        path = args.getString("path")
         uploadButton = view.findViewById(R.id.upload_button)
         uploadButton.setOnClickListener { uploadVideo() }
     }
@@ -102,11 +103,8 @@ class UploadVideoFragment: Fragment(R.layout.fragment_media_player) {
                         val leftEye = uploadResponse.left_eye
                         val rightEye = uploadResponse.right_eye
 
-                        val bundle = Bundle()
-                        bundle.putString("leftEye", leftEye)
-                        bundle.putString("rightEye", rightEye)
-                        val fragment = IrisPreviewFragment()
-                        fragment.arguments = bundle
+                        args.putString("leftEye", leftEye)
+                        args.putString("rightEye", rightEye)
                         Log.d(
                             ContentValues.TAG,
                             "Upload successful. Left eye: $leftEye, Right eye: $rightEye"
