@@ -49,7 +49,7 @@ class UploadVideoFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        path = savedInstanceState?.getString("path")
+        path = requireArguments().getString("path")
 
         uploadButton = view.findViewById(R.id.upload_button)
         uploadButton.setOnClickListener{
@@ -61,16 +61,15 @@ class UploadVideoFragment: Fragment() {
     }
 
     private fun uploadVideo() {
-        val videoPath = path
-            Log.d(ContentValues.TAG, videoPath.toString())
         val file = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES),
-            "CameraX-Video/$videoPath"
+            path
         )
         if (file.exists()) {
             Log.d(ContentValues.TAG, "file exists")
         } else {
             Log.d(ContentValues.TAG, "error file doesnt exist")
+            progressBar.visibility = View.INVISIBLE
+            uploadButton.isEnabled = true
             return
         }
         val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())

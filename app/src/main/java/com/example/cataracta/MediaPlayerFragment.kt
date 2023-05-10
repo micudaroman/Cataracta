@@ -19,7 +19,6 @@ import com.example.cataracta.ui.record.RecordFragment
 class MediaPlayerFragment: Fragment() {
     private lateinit var videoUri: Uri
     private var path: String? = null
-    private var args = Bundle()
     private lateinit var player: ExoPlayer
     private lateinit var playerView: PlayerView
     private lateinit var mediaItem: MediaItem
@@ -36,6 +35,9 @@ class MediaPlayerFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        path = requireArguments().getString("path")
+        var args = Bundle()
+        args.putString("path", path)
         binding.analysisButton.setOnClickListener{
             requireActivity().supportFragmentManager
                 .beginTransaction()
@@ -48,9 +50,8 @@ class MediaPlayerFragment: Fragment() {
     }
 
     private fun setupPlayer() {
-        path = requireArguments().getString("path")
+//        path = requireArguments().getString("path")
         Log.d(ContentValues.TAG, path.toString())
-        args.putString("path", path)
         videoUri = Uri.parse(path)
         mediaItem = MediaItem.fromUri(videoUri)
         player = ExoPlayer.Builder(requireContext()).build()

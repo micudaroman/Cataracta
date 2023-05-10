@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/ivLeftEye"
-        android:text="Left eye"
+        android:text="Ľavé oko"
         android:textAlignment="center" />
 
     <ImageView
@@ -26,6 +26,19 @@
         app:layout_constraintBottom_toTopOf="@+id/textViewRight" />
 
     <TextView
+        android:id="@+id/tvNoLeftEye"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        app:layout_constraintStart_toStartOf="@id/ivLeftEye"
+        app:layout_constraintEnd_toEndOf="@id/ivLeftEye"
+        app:layout_constraintTop_toTopOf="@id/ivLeftEye"
+        app:layout_constraintBottom_toBottomOf="@id/ivLeftEye"
+        android:text="Nenašlo sa ľavé oko s červeným pozadím"
+        android:textColor="@color/red_bright"
+        android:textAlignment="center"
+        />
+
+    <TextView
         android:id="@+id/textViewRight"
         android:layout_width="match_parent"
         android:layout_height="15dp"
@@ -34,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivLeftEye"
         app:layout_constraintBottom_toTopOf="@+id/ivRightEye"
-        android:text="Right eye"
+        android:text="Pravé oko"
         android:textAlignment="center"
         />
 
@@ -47,6 +60,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewRight" />
 
+    <TextView
+        android:id="@+id/tvNoRightEye"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        app:layout_constraintStart_toStartOf="@id/ivRightEye"
+        app:layout_constraintEnd_toEndOf="@id/ivRightEye"
+        app:layout_constraintTop_toTopOf="@id/ivRightEye"
+        app:layout_constraintBottom_toBottomOf="@id/ivRightEye"
+        android:text="Nenašlo sa pravé oko s červeným pozadím"
+        android:textColor="@color/red_bright"
+        android:textAlignment="center"
+        />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -55,7 +81,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivRightEye"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="Upload"
+        android:text="Ďalej"
         />
 
 
