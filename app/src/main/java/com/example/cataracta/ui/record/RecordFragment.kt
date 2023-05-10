@@ -29,6 +29,7 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.fragment.app.FragmentActivity
+import com.example.cataracta.MediaPlayerFragment
 import com.example.cataracta.databinding.FragmentImageSelectionBinding
 import com.example.cataracta.databinding.RecordBinding
 import java.util.concurrent.ExecutorService
@@ -51,7 +52,7 @@ class RecordFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = RecordBinding.inflate(inflater)
+        binding = RecordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -158,30 +159,30 @@ class RecordFragment: Fragment() {
                         if (!recordEvent.hasError()) {
                             val msg = "Video capture succeeded: " +
                                     "${recordEvent.outputResults.outputUri}"
-//                            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT)
-//                                .show()
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
+                                .show()
                             Log.d(RecordFragment.TAG, msg)
 
 // tomas
 //                            intent = Intent(this, MediaPlayerActivity::class.java)
 //                            intent.putExtra("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-//                            startActivity(intent)\
+//                            startActivity(intent)
 
 
                             Log.d(RecordFragment.TAG +"this file will be played", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
 
-                            val bundle = Bundle()
-                            bundle.putString("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
-//                            val mediaPlayerFragment = MediaPlayerFragment()
-//                            mediaPlayerFragment.arguments = bundle
 
-                            //   tomas
-//                            val transaction: FragmentTransaction =
-//                                supportFragmentManager.beginTransaction()
-//                            transaction.replace(R.id.container, mediaPlayerFragment)
-//                            transaction.addToBackStack(null)
-//                            transaction.commit()
-//                            Log.d(TAG, "failure")
+
+
+                            val args = Bundle()
+                            args.putString("path", "/storage/emulated/0/Movies/CameraX-Video/$name.mp4")
+
+                            requireActivity().supportFragmentManager
+                                .beginTransaction()
+                                .replace(R.id.my_fragment_container, MediaPlayerFragment::class.java, args)
+                                .addToBackStack(RecordFragment::class.java.name)
+                                .commit()
+
 
 
                         } else {

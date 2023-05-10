@@ -14,7 +14,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.cataracta.databinding.FragmentMediaPlayerBinding
 
-@UnstableApi class MediaPlayerFragment: Fragment() {
+class MediaPlayerFragment: Fragment() {
     private lateinit var videoUri: Uri
     private var path: String? = null
     private lateinit var player: ExoPlayer
