@@ -12,8 +12,9 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import com.example.cataracta.databinding.FragmentMediaPlayerBinding
 
-@UnstableApi class MediaPlayerFragment: Fragment(R.layout.fragment_media_player) {
+@UnstableApi class MediaPlayerFragment: Fragment() {
     private lateinit var videoUri: Uri
     private var path: String? = null
     private lateinit var player: ExoPlayer
@@ -21,6 +22,27 @@ import androidx.media3.ui.PlayerView
     private lateinit var mediaItem: MediaItem
     private lateinit var uploadButton: Button
 
+    private lateinit var binding: FragmentMediaPlayerBinding
+
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentMediaPlayerBinding.inflate(inflater)
+        return binding.root
+//        val view = inflater.inflate(R.layout.fragment_media_player, container, false)
+//        Log.d(TAG, "mediaPlayer.onCreate()")
+//        setupViews(view)
+//        setupPlayer()
+//        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
 
     private fun setupViews(view: View?) {
         uploadButton = requireView().findViewById(R.id.my_image_button)
@@ -61,17 +83,7 @@ import androidx.media3.ui.PlayerView
 //        setupViews(view)
 //        setupPlayer()
 //    }
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_media_player, container, false)
-        Log.d(TAG, "mediaPlayer.onCreate()")
-        setupViews(view)
-        setupPlayer()
-        return view
-    }
+
 //    override fun  onViewCreated(view: View, savedInstanceState: Bundle?){
 //        super.onViewCreated(view, savedInstanceState)
 //        setupViews(view)

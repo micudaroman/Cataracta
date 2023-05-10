@@ -29,8 +29,8 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.fragment.app.FragmentActivity
-import com.example.cataracta.databinding.ActivityMainBinding
 import com.example.cataracta.databinding.FragmentImageSelectionBinding
+import com.example.cataracta.databinding.RecordBinding
 import java.util.concurrent.ExecutorService
 
 
@@ -40,35 +40,31 @@ class RecordFragment: Fragment() {
     private var videoCapture: VideoCapture<Recorder>? = null
     private var recording: Recording? = null
     private var camera: Camera? = null
-//    private lateinit var viewBinding: ActivityMainBinding
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var lumens: TextView
     private var imageCapture: ImageCapture? = null
 
-    private lateinit var binding:
-
+    private lateinit var binding: RecordBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        binding = RecordFragment.inflate(inflater)
-        return inflater.inflate(R.layout.record, container, false)
+        binding = RecordBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewBinding = ActivityMainBinding.inflate(layoutInflater)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        viewBinding.videoCaptureButton.setOnClickListener { captureVideo() }
+        binding.videoCaptureButton.setOnClickListener { captureVideo() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        viewBinding.infoButton.setOnClickListener {
+        binding.infoButton.setOnClickListener {
             showPopup()
         }
         Toast.makeText(requireContext(),
@@ -107,7 +103,7 @@ class RecordFragment: Fragment() {
     private fun captureVideo() {
         val videoCapture = this.videoCapture ?: return
 
-        viewBinding.videoCaptureButton.isEnabled = false
+        binding.videoCaptureButton.isEnabled = false
 
         val curRecording = recording
 
@@ -137,7 +133,7 @@ class RecordFragment: Fragment() {
         }
 
         val mediaStoreOutputOptions = MediaStoreOutputOptions
-            .Builder(contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+            .Builder(requireContext().contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
             .setContentValues(contentValues)
             .build()
         recording = videoCapture.output
@@ -153,7 +149,7 @@ class RecordFragment: Fragment() {
             .start(ContextCompat.getMainExecutor(requireContext())) { recordEvent ->
                 when(recordEvent) {
                     is VideoRecordEvent.Start -> {
-                        viewBinding.videoCaptureButton.apply {
+                        binding.videoCaptureButton.apply {
                             text = getString(R.string.stop_capture)
                             isEnabled = true
                         }
@@ -195,7 +191,7 @@ class RecordFragment: Fragment() {
                                 RecordFragment.TAG, "Video capture ends with error: " +
                                     "${recordEvent.error}")
                         }
-                        viewBinding.videoCaptureButton.apply {
+                        binding.videoCaptureButton.apply {
                             text = getString(R.string.start_capture)
                             isEnabled = true
                         }
@@ -214,7 +210,7 @@ class RecordFragment: Fragment() {
             val preview = Preview.Builder()
                 .build()
                 .also {
-                    it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
+                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
                 }
 
             // ImageCapture

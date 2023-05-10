@@ -16,6 +16,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
 import androidx.media3.common.util.UnstableApi
+import com.example.cataracta.databinding.FragmentUploadVideoBinding
 import com.example.cataracta.ui.irisPreview.IrisPreviewFragment
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -30,7 +31,26 @@ import java.io.File
     private lateinit var uploadButton: Button
     private val fileApi: FileApi = FileApi.invoke()
 
+    private lateinit var binding: FragmentUploadVideoBinding
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentUploadVideoBinding.inflate(inflater)
+        return binding.root
+
+//        val view = inflater.inflate(R.layout.fragment_upload_video, container, false)
+//        Log.d(TAG, "UploadVideo.onCreate()")
+//        setupViews(view)
+//        setupPermissions()
+//        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
     private fun setupViews(view: View) {
         path = requireArguments().getString("path")
         uploadButton = view.findViewById(R.id.upload_button)
@@ -96,17 +116,7 @@ import java.io.File
         })
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_upload_video, container, false)
-        Log.d(TAG, "UploadVideo.onCreate()")
-        setupViews(view)
-        setupPermissions()
-        return view
-    }
+
 
     override fun onResume() {
         super.onResume()

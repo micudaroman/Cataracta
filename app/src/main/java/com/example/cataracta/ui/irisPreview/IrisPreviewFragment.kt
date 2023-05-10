@@ -4,11 +4,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import com.example.cataracta.R
+import com.example.cataracta.databinding.IrisPreviewBinding
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
 
@@ -18,6 +21,15 @@ class IrisPreviewFragment: Fragment() {
     private lateinit var ivRightEye: ImageView
     private lateinit var btnUpload: Button
 
+    private lateinit var binding: IrisPreviewBinding
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = IrisPreviewBinding.inflate(inflater)
+        return binding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

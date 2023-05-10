@@ -9,40 +9,39 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.example.cataracta.databinding.ActivityMainBinding
 import java.util.*
 import java.util.concurrent.ExecutorService
 import android.Manifest
 import android.os.Build
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.findNavController
+import androidx.navigation.ui.navigateUp
+import com.example.cataracta.ui.record.RecordFragment
 
 
 class MainActivity : AppCompatActivity(){
 
-    private lateinit var viewBinding: ActivityMainBinding
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var navController: NavController
+//    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.navigation_activity)
-
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        val host: NavHostFragment = supportFragmentManager
-            .findFragmentById(R.id.recordFragment) as NavHostFragment? ?: return
-
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
 
-        viewBinding = ActivityMainBinding.inflate(layoutInflater)
+//        setContentView(R.layout.navigation_activity)
+//
+//
+//        supportFragmentManager
+//            .beginTransaction()
+//            .add(R.id.my_fragment_container, RecordFragment())
+//            .commit()
 
 
-        val navController = host.navController
-
+//        val navController = host.navController
     }
 
     companion object {
@@ -70,7 +69,10 @@ class MainActivity : AppCompatActivity(){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                setContentView(R.layout.record)
+                supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.my_fragment_container, RecordFragment())
+                    .commit()
             } else {
                 Toast.makeText(this,
                     "Permissions not granted by the user.",
@@ -83,6 +85,7 @@ class MainActivity : AppCompatActivity(){
         super.onDestroy()
         cameraExecutor.shutdown()
     }
+
 
 
 
