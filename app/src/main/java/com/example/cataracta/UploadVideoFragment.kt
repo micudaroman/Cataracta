@@ -26,7 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-@UnstableApi class UploadVideoFragment: Fragment(R.layout.fragment_media_player) {
+class UploadVideoFragment: Fragment(R.layout.fragment_media_player) {
     private var path: String? = null
     private lateinit var uploadButton: Button
     private val fileApi: FileApi = FileApi.invoke()
@@ -38,7 +38,7 @@ import java.io.File
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentUploadVideoBinding.inflate(inflater)
+        binding = FragmentUploadVideoBinding.inflate(inflater, container, false)
         return binding.root
 
 //        val view = inflater.inflate(R.layout.fragment_upload_video, container, false)
@@ -50,6 +50,17 @@ import java.io.File
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        uploadVideo()
+        binding.uploadButton.setOnClickListener{
+            val args = Bundle()
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.my_fragment_container, IrisPreviewFragment::class.java, args)
+                .addToBackStack(UploadVideoFragment::class.java.name)
+                .commit()
+
+        }
     }
     private fun setupViews(view: View) {
         path = requireArguments().getString("path")

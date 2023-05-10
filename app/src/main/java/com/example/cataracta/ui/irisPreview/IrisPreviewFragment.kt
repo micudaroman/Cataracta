@@ -27,7 +27,7 @@ class IrisPreviewFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = IrisPreviewBinding.inflate(inflater)
+        binding = IrisPreviewBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

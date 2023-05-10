@@ -13,6 +13,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.cataracta.databinding.FragmentMediaPlayerBinding
+import com.example.cataracta.ui.record.RecordFragment
 
 class MediaPlayerFragment: Fragment() {
     private lateinit var videoUri: Uri
@@ -30,8 +31,8 @@ class MediaPlayerFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMediaPlayerBinding.inflate(inflater)
+    ): View? {;
+        binding = FragmentMediaPlayerBinding.inflate(inflater, container, false)
         return binding.root
 //        val view = inflater.inflate(R.layout.fragment_media_player, container, false)
 //        Log.d(TAG, "mediaPlayer.onCreate()")
@@ -42,10 +43,19 @@ class MediaPlayerFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.analysisButton.setOnClickListener{
+            val args = Bundle()
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.my_fragment_container, UploadVideoFragment::class.java, args)
+                .addToBackStack(MediaPlayerFragment::class.java.name)
+                .commit()
+
+        }
     }
 
     private fun setupViews(view: View?) {
-        uploadButton = requireView().findViewById(R.id.my_image_button)
+        uploadButton = requireView().findViewById(R.id.analysis_button)
         uploadButton.setOnClickListener { uploadVideo() }
     }
 
@@ -56,14 +66,14 @@ class MediaPlayerFragment: Fragment() {
         player = ExoPlayer.Builder(requireContext()).build()
         playerView = requireView().findViewById(R.id.player_view)
         playerView.player = player
-        playerView.controllerAutoShow = false
+//        playerView.controllerAutoShow = false
         player.setPlaybackSpeed(0.25F)
         player.setMediaItem(mediaItem)
         player.prepare()
     }
 
     private fun uploadVideo() {
-        path
+
 
 
 //        intent = Intent(this, MediaPlayerActivity::class.java)
@@ -92,7 +102,6 @@ class MediaPlayerFragment: Fragment() {
 
     override fun onStart() {
         super.onStart()
-        setupViews(view)
         setupPlayer()
     }
 
