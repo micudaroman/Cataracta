@@ -3,7 +3,6 @@ package com.example.cataracta.ui.record
 import android.Manifest
 import android.content.ContentResolver
 import android.content.ContentValues
-import android.hardware.SensorEventListener
 import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Build
@@ -13,47 +12,40 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.core.Camera
 import androidx.camera.video.*
 import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.cataracta.MainActivity
-import com.example.cataracta.MediaPlayerFragment
 import com.example.cataracta.R
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
 import android.content.pm.PackageManager
-import android.hardware.Sensor
-import android.hardware.SensorManager
-import android.view.WindowManager
-import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentActivity
 import com.example.cataracta.databinding.ActivityMainBinding
+import com.example.cataracta.databinding.FragmentImageSelectionBinding
 import java.util.concurrent.ExecutorService
 
 
-abstract class RecordFragment: Fragment() {
+class RecordFragment: Fragment() {
     var flashLightStatus: Boolean = false
-    abstract val contentResolver: ContentResolver
+//    abstract val contentResolver: ContentResolver
     private var videoCapture: VideoCapture<Recorder>? = null
     private var recording: Recording? = null
     private var camera: Camera? = null
-    private lateinit var viewBinding: ActivityMainBinding
+//    private lateinit var viewBinding: ActivityMainBinding
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var lumens: TextView
     private var imageCapture: ImageCapture? = null
+
+    private lateinit var binding:
 
 
     override fun onCreateView(
@@ -61,7 +53,9 @@ abstract class RecordFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_main, container, false)
+
+        binding = RecordFragment.inflate(inflater)
+        return inflater.inflate(R.layout.record, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

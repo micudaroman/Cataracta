@@ -4,13 +4,11 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.video.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.cataracta.databinding.ActivityMainBinding
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -27,19 +25,22 @@ class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (allPermissionsGranted()) {
-            setContentView(R.layout.activity_main)
-        }else{
+        setContentView(R.layout.navigation_activity)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        val host: NavHostFragment = supportFragmentManager
+            .findFragmentById(R.id.recordFragment) as NavHostFragment? ?: return
+
+        if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
         }
 
-
-        setContentView(R.layout.activity_main)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
 
-        val host: NavHostFragment = supportFragmentManager
-            .findFragmentById(R.id.recordFragment) as NavHostFragment? ?: return
+
         val navController = host.navController
 
     }
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity(){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                setContentView(R.layout.activity_main)
+                setContentView(R.layout.record)
             } else {
                 Toast.makeText(this,
                     "Permissions not granted by the user.",

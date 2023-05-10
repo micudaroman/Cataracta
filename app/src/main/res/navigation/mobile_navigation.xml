@@ -51,7 +51,7 @@
         android:name="com.example.cataracta.ui.record.RecordFragment"
         android:label="RecordFragment"
         app:defaultNavHost="true"
-        tools:layout="@layout/activity_main">
+        tools:layout="@layout/record">
         <action
             android:id="@+id/action_recordFragment_to_mediaPlayerFragment"
             app:destination="@id/mediaPlayerFragment"
