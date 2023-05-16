@@ -46,8 +46,8 @@ class MediaPlayerFragment: Fragment() {
                 .commit()
 
         }
-        setupPlayer()
     }
+
 
     private fun setupPlayer() {
 //        path = requireArguments().getString("path")
