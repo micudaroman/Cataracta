@@ -46,6 +46,7 @@ class MediaPlayerFragment: Fragment() {
                 .commit()
 
         }
+        setupPlayer()
     }
 
 
@@ -78,4 +79,8 @@ class MediaPlayerFragment: Fragment() {
         private const val TAG = "Cataracta/MediaPlayer"
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        player.release()
+    }
 }
