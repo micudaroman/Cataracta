@@ -24,6 +24,7 @@ import java.util.*
 import java.util.concurrent.Executors
 import android.content.pm.PackageManager
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.camera.core.CameraSelector
@@ -45,6 +46,7 @@ class RecordFragment: Fragment() {
     private var camera: Camera? = null
     private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
+    private lateinit var vajce: ImageView
 
     private lateinit var binding: RecordBinding
 
@@ -60,11 +62,13 @@ class RecordFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vajce = view.findViewById(R.id.face_placement)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         binding.videoCaptureButton.setOnClickListener { captureVideo() }
         cameraExecutor = Executors.newSingleThreadExecutor()
         binding.infoButton.setOnClickListener {
             showPopup()
+            vajce.visibility = View.INVISIBLE
         }
         Toast.makeText(requireContext(),
             "Start camera",
@@ -83,6 +87,9 @@ class RecordFragment: Fragment() {
         val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
         popupWindow.isFocusable = true
         popupWindow.showAsDropDown(binding.popupHelper, 0, 0)
+        popupWindow.setOnDismissListener {
+            vajce.visibility = View.VISIBLE
+        }
 
         popupView.findViewById<View>(R.id.info_button_ok).setOnClickListener {
             popupWindow.dismiss()
