@@ -19,6 +19,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.974" />
 
+        <TextView
+            android:id="@+id/tvUploadError"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Chyba pri spracúvaní videa. Prosím nahrajte iné video."
+            android:textColor="@color/red_bright"
+            android:textAlignment="center"/>
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:visibility="invisible"
@@ -28,7 +41,7 @@
             app:layout_constraintBottom_toTopOf="@+id/upload_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tvUploadError" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

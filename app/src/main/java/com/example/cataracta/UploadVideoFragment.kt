@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -36,6 +37,7 @@ class UploadVideoFragment: Fragment() {
     private lateinit var binding: FragmentUploadVideoBinding
     private val args = Bundle()
     private lateinit var progressBar: ProgressBar
+    private lateinit var tvUploadError: TextView
 
 
     override fun onCreateView(
@@ -51,10 +53,12 @@ class UploadVideoFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         path = requireArguments().getString("path")
 
+        tvUploadError = view.findViewById(R.id.tvUploadError)
+        progressBar = view.findViewById(R.id.progressBar)
         uploadButton = view.findViewById(R.id.upload_button)
         uploadButton.setOnClickListener{
-            progressBar = view.findViewById(R.id.progressBar)
             progressBar.visibility = View.VISIBLE
+            tvUploadError.visibility = View.INVISIBLE
             uploadButton.isEnabled = false
             uploadVideo()
         }
@@ -105,6 +109,8 @@ class UploadVideoFragment: Fragment() {
                     }
                 } else {
                     Log.d(ContentValues.TAG, "Upload failed with error: ${response.message()}")
+                    tvUploadError.visibility = View.VISIBLE
+                    progressBar.visibility = View.INVISIBLE
                 }
             }
 
