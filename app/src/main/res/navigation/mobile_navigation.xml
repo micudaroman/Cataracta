@@ -3,23 +3,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/recordFragment">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.cataracta.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
+        android:id="@+id/mediaPlayerFragment"
+        android:name="com.example.cataracta.MediaPlayerFragment"
+        android:label="MediaPlayerFragment"
+        app:defaultNavHost="true"
+        tools:layout="@layout/fragment_media_player">
+        <action
+            android:id="@+id/action_mediaPlayerFragment_to_uploadVideoFragment2"
+            app:destination="@id/uploadVideoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.cataracta.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
+        android:id="@+id/uploadVideoFragment"
+        android:name="com.example.cataracta.UploadVideoFragment"
+        android:label="UploadVideoFragment"
+        app:defaultNavHost="true"
+        tools:layout="@layout/fragment_upload_video">
+        <action
+            android:id="@+id/action_uploadVideoFragment_to_irisPreviewFragment"
+            app:destination="@id/irisPreviewFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.cataracta.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/irisPreviewFragment"
+        android:name="com.example.cataracta.ui.irisPreview.IrisPreviewFragment"
+        android:label="IrisPreviewFragment"
+        app:defaultNavHost="true"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        tools:layout="@layout/iris_preview">
+        <action
+            android:id="@+id/action_irisPreviewFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordFragment"
+        android:name="com.example.cataracta.ui.record.RecordFragment"
+        android:label="RecordFragment"
+        app:defaultNavHost="true"
+        tools:layout="@layout/record">
+        <action
+            android:id="@+id/action_recordFragment_to_mediaPlayerFragment"
+            app:destination="@id/mediaPlayerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.example.cataracta.ResultFragment"
+        android:label="ResultFragment" >
+        <action
+            android:id="@+id/action_resultFragment_to_recordFragment"
+            app:destination="@id/recordFragment" />
+    </fragment>
 </navigation>
