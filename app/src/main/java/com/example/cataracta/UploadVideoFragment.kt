@@ -38,6 +38,7 @@ class UploadVideoFragment: Fragment() {
     private val args = Bundle()
     private lateinit var progressBar: ProgressBar
     private lateinit var tvUploadError: TextView
+    private lateinit var tvProcessing: TextView
 
 
     override fun onCreateView(
@@ -53,12 +54,14 @@ class UploadVideoFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         path = requireArguments().getString("path")
 
+        tvProcessing = view.findViewById(R.id.tvProcessing)
         tvUploadError = view.findViewById(R.id.tvUploadError)
         progressBar = view.findViewById(R.id.progressBar)
         uploadButton = view.findViewById(R.id.upload_button)
         uploadButton.setOnClickListener{
             progressBar.visibility = View.VISIBLE
             tvUploadError.visibility = View.INVISIBLE
+            tvProcessing.visibility = View.VISIBLE
             uploadButton.isEnabled = false
             uploadVideo()
         }
@@ -73,6 +76,7 @@ class UploadVideoFragment: Fragment() {
         } else {
             Log.d(ContentValues.TAG, "error file doesnt exist")
             progressBar.visibility = View.INVISIBLE
+            tvProcessing.visibility = View.INVISIBLE
             uploadButton.isEnabled = true
             return
         }
@@ -93,6 +97,7 @@ class UploadVideoFragment: Fragment() {
                         args.putString("rightEye", rightEye)
 
                         progressBar.visibility = View.INVISIBLE
+                        tvProcessing.visibility = View.INVISIBLE
                         uploadButton.isEnabled = true
 
                         requireActivity().supportFragmentManager
@@ -111,6 +116,7 @@ class UploadVideoFragment: Fragment() {
                     Log.d(ContentValues.TAG, "Upload failed with error: ${response.message()}")
                     tvUploadError.visibility = View.VISIBLE
                     progressBar.visibility = View.INVISIBLE
+                    tvProcessing.visibility = View.INVISIBLE
                 }
             }
 
