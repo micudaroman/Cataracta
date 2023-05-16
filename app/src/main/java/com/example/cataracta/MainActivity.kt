@@ -1,25 +1,24 @@
 package com.example.cataracta
 
+import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.video.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import com.example.cataracta.ui.record.RecordFragment
 import java.util.*
 import java.util.concurrent.ExecutorService
-import android.Manifest
-import android.os.Build
-
-import com.example.cataracta.ui.record.RecordFragment
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity(){
 
-    private lateinit var cameraExecutor: ExecutorService
+    private var cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +68,11 @@ class MainActivity : AppCompatActivity(){
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+        try {
+            cameraExecutor.awaitTermination(5, TimeUnit.SECONDS)
+        } catch (e: InterruptedException) {
+            // Handle interruption exception
+        }
     }
 
 
