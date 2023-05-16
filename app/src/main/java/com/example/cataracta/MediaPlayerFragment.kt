@@ -64,10 +64,6 @@ class MediaPlayerFragment: Fragment() {
         player.prepare()
     }
 
-    override fun onStart() {
-        super.onStart()
-        setupPlayer()
-    }
 
     override fun onResume() {
         super.onResume()
@@ -80,7 +76,8 @@ class MediaPlayerFragment: Fragment() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         player.release()
+        super.onDestroy()
+
     }
 }
