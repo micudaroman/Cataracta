@@ -58,6 +58,7 @@ class MediaPlayerFragment: Fragment() {
         playerView = requireView().findViewById(R.id.player_view)
         playerView.player = player
         player.setPlaybackSpeed(0.25F)
+        player.volume = 0F
         player.setMediaItem(mediaItem)
         player.prepare()
     }

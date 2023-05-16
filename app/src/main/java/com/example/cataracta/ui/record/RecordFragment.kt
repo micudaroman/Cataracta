@@ -130,14 +130,6 @@ class RecordFragment: Fragment() {
             .build()
         recording = videoCapture.output
             .prepareRecording(requireContext(), mediaStoreOutputOptions)
-            .apply {
-                if (ContextCompat.checkSelfPermission(requireContext(),
-                        Manifest.permission.RECORD_AUDIO) ==
-                    PackageManager.PERMISSION_GRANTED)
-                {
-                    withAudioEnabled()
-                }
-            }
             .start(ContextCompat.getMainExecutor(requireContext())) { recordEvent ->
                 when(recordEvent) {
                     is VideoRecordEvent.Start -> {
