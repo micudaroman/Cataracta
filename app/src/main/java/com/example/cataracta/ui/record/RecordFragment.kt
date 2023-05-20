@@ -39,8 +39,6 @@ import java.util.concurrent.ExecutorService
 
 
 class RecordFragment: Fragment() {
-    var flashLightStatus: Boolean = false
-//    abstract val contentResolver: ContentResolver
     private var videoCapture: VideoCapture<Recorder>? = null
     private var recording: Recording? = null
     private var camera: Camera? = null

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C1B71C1C"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/info_title"
+        android:layout_width="406dp"
+        android:layout_height="51dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/info_review_text_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/info_review_text_1"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center|start"
+        android:paddingTop="15dp"
+        android:text="Uistite sa, že na na nahranom videu sa nachádzajú oči s červeným odrazom."
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/info_review_text_2"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:gravity="center|start"
+        android:paddingTop="15dp"
+        android:text="V prípade, že sa oči s červeným odrazom vo videu nenachádzajú, opakujte nahrávanie."
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_review_text_1" />
+
+    <Button
+        android:id="@+id/btnInfoReviewOk"
+        android:layout_width="323dp"
+        android:layout_height="52dp"
+        android:text="@string/info_button"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_review_text_2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
+import android.widget.PopupWindow
 import androidx.fragment.app.Fragment
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
@@ -47,9 +49,21 @@ class MediaPlayerFragment: Fragment() {
 
         }
         setupPlayer()
+        binding.btnOpenPopup.setOnClickListener{
+            showPopup()
+        }
     }
 
+    private fun showPopup() {
+        val popupView = LayoutInflater.from(requireContext()).inflate(R.layout.popup_preview_instructions, null)
+        val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        popupWindow.isFocusable = true
+        popupWindow.showAsDropDown(binding.tvPopupHelper, 0, 0)
 
+        popupView.findViewById<View>(R.id.btnInfoReviewOk).setOnClickListener {
+            popupWindow.dismiss()
+        }
+    }
     private fun setupPlayer() {
 //        path = requireArguments().getString("path")
         Log.d(ContentValues.TAG, path.toString())
